@@ -15,7 +15,7 @@ var id = 1;
 module.exports = {
   messages: {
     get: function (req, res) {
-      console.log('get models: ', models.messages.get());
+      // console.log('get models: ', models.messages.get());
       res.status(200).send(messages);
       res.end();
 

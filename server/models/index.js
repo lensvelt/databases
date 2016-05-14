@@ -3,14 +3,13 @@ var db = require('../db'); //uses our db connection module?
 //Will interface with our database and the controller (use callbacks/promises for interaction with controller)
 module.exports = {
   messages: {
-    get: function () {
+    get: function (callback) {
       db.connection.connect();
       db.connection.query({
         sql: 'SELECT * FROM messages',
         timeout: 40000
       }, function(error, rows, fields) {
         console.log('rows: ', rows, 'error: ', error);
-	    console.log(store);
       });
       db.connection.end();
 
