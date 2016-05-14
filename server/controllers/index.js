@@ -15,18 +15,20 @@ var id = 1;
 module.exports = {
   messages: {
     get: function (req, res) {
-      // console.log('get models: ', models.messages.get());
-      res.status(200).send(messages);
-      res.end();
+      models.messages.get(function(error, result) {
+        res.status(200).send(result);
+        res.end(); 
+      });
 
     }, // a function which handles a get request for all messages
 
     post: function (req, res) {
-      req.body.objectId = id++;
-      messages.results.push(req.body);
-
-      res.status(200); //.send(messages.results[messages.results.length - 2].objectId);
-      res.end();
+      //req.body.objectId = id++;
+      //messages.results.push(req.body);
+      models.messages.post(function(error, result) {
+        res.status(200); //.send(messages.results[messages.results.length - 2].objectId);
+        res.end();
+      });
     } // a function which handles posting a message to the database
   },
 

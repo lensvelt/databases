@@ -4,14 +4,14 @@ var app = {
   //TODO: The current 'toggleFriend' function just toggles the class 'friend'
   //to all messages sent by the user
   server: 'http://127.0.0.1:3000/classes/messages',
-  username: 'anonymous',
-  roomname: 'lobby',
+  user: 'anonymous',
+  room: 'lobby',
   lastMessageId: 0,
   friends: {},
 
   init: function() {
-    // Get username
-    app.username = window.location.search.substr(10) || 'fred';
+    // Get user
+    app.user = window.location.search.substr(10) || 'fred';
 
     // Cache jQuery selectors
     app.$message = $('#message');
@@ -20,7 +20,7 @@ var app = {
     app.$send = $('#send');
 
     // Add listeners
-    app.$chats.on('click', '.username', app.toggleFriend);
+    app.$chats.on('click', '.user', app.toggleFriend);
     app.$send.on('submit', app.handleSubmit);
     app.$roomSelect.on('change', app.saveRoom);
 
@@ -62,22 +62,22 @@ var app = {
       success: function(data) {
         console.log(data);
         // Don't bother if we have nothing to work with
-        if (!data.results || !data.results.length) { return; }
+        if (!data || !data.length) { return; }
 
         // Get the last message
-        var mostRecentMessage = data.results[data.results.length - 1];
-        var displayedRoom = $('.chat span').first().data('roomname');
+        var mostRecentMessage = data[data.length - 1];
+        var displayedRoom = $('.chat span').first().data('room');
         app.stopSpinner();
         // Only bother updating the DOM if we have a new message
-        if (mostRecentMessage.objectId !== app.lastMessageId || app.roomname !== displayedRoom) {
+        if (mostRecentMessage.id !== app.lastMessageId || app.room !== displayedRoom) {
           // Update the UI with the fetched rooms
-          app.populateRooms(data.results);
+          app.populateRooms(data);
 
           // Update the UI with the fetched messages
-          app.populateMessages(data.results, animate);
+          app.populateMessages(data, animate);
 
           // Store the ID of the most recent message
-          app.lastMessageId = mostRecentMessage.objectId;
+          app.lastMessageId = mostRecentMessage.id;
         }
       },
       error: function(data) {
@@ -117,47 +117,47 @@ var app = {
     if (results) {
       var rooms = {};
       results.forEach(function(data) {
-        var roomname = data.roomname;
-        if (roomname && !rooms[roomname]) {
+        var room = data.room;
+        if (room && !rooms[room]) {
           // Add the room to the select menu
-          app.addRoom(roomname);
+          app.addRoom(room);
 
           // Store that we've added this room already
-          rooms[roomname] = true;
+          rooms[room] = true;
         }
       });
     }
 
     // Select the menu option
-    app.$roomSelect.val(app.roomname);
+    app.$roomSelect.val(app.room);
   },
 
-  addRoom: function(roomname) {
+  addRoom: function(room) {
     // Prevent XSS by escaping with DOM methods
-    var $option = $('<option/>').val(roomname).text(roomname);
+    var $option = $('<option/>').val(room).text(room);
 
     // Add to select
     app.$roomSelect.append($option);
   },
 
   addMessage: function(data) {
-    if (!data.roomname) {
-      data.roomname = 'lobby';
+    if (!data.room) {
+      data.room = 'lobby';
     }
 
     // Only add messages that are in our current room
-    if (data.roomname === app.roomname) {
+    if (data.room === app.room) {
       // Create a div to hold the chats
       var $chat = $('<div class="chat"/>');
 
       // Add in the message data using DOM methods to avoid XSS
-      // Store the username in the element's data
-      var $username = $('<span class="username"/>');
-      $username.text(data.username + ': ').attr('data-username', data.username).attr('data-roomname', data.roomname).appendTo($chat);
+      // Store the user in the element's data
+      var $user = $('<span class="user"/>');
+      $user.text(data.user + ': ').attr('data-user', data.user).attr('data-room', data.room).appendTo($chat);
 
       // Add the friend class
-      if (app.friends[data.username] === true) {
-        $username.addClass('friend');
+      if (app.friends[data.user] === true) {
+        $user.addClass('friend');
       }
 
       var $message = $('<br><span/>');
@@ -169,15 +169,15 @@ var app = {
   },
 
   toggleFriend: function(evt) {
-    var username = $(evt.currentTarget).attr('data-username');
+    var user = $(evt.currentTarget).attr('data-user');
 
-    if (username !== undefined) {
+    if (user !== undefined) {
       // Store as a friend
-      app.friends[username] = true;
+      app.friends[user] = true;
 
       // Bold all previous messages
-      // Escape the username in case it contains a quote
-      var selector = '[data-username="' + username.replace(/"/g, '\\\"') + '"]';
+      // Escape the user in case it contains a quote
+      var selector = '[data-user="' + user.replace(/"/g, '\\\"') + '"]';
       var $usernames = $(selector).toggleClass('friend');
     }
   },
@@ -187,16 +187,16 @@ var app = {
     var selectIndex = app.$roomSelect.prop('selectedIndex');
     // New room is always the first option
     if (selectIndex === 0) {
-      var roomname = prompt('Enter room name');
-      if (roomname) {
+      var room = prompt('Enter room name');
+      if (room) {
         // Set as the current room
-        app.roomname = roomname;
+        app.room = room;
 
         // Add the room to the menu
-        app.addRoom(roomname);
+        app.addRoom(room);
 
         // Select the menu option
-        app.$roomSelect.val(roomname);
+        app.$roomSelect.val(room);
 
         // Fetch messages again
         app.fetch();
@@ -204,7 +204,7 @@ var app = {
     } else {
       app.startSpinner();
       // Store as undefined for empty names
-      app.roomname = app.$roomSelect.val();
+      app.room = app.$roomSelect.val();
 
       // Fetch messages again
       app.fetch();
@@ -213,9 +213,9 @@ var app = {
 
   handleSubmit: function(evt) {
     var message = {
-      username: app.username,
+      user: app.user,
       text: app.$message.val(),
-      roomname: app.roomname || 'lobby'
+      room: app.room || 'lobby'
     };
 
     app.send(message);

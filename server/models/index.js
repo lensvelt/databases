@@ -4,17 +4,24 @@ var db = require('../db'); //uses our db connection module?
 module.exports = {
   messages: {
     get: function (callback) {
-      db.connection.connect();
       db.connection.query({
         sql: 'SELECT * FROM messages',
         timeout: 40000
       }, function(error, rows, fields) {
+        //access req data info 
         console.log('rows: ', rows, 'error: ', error);
+        callback(error, rows);
       });
-      db.connection.end();
 
     }, // a function which produces all the messages
-    post: function () {} // a function which can be used to insert a message into the database
+    post: function (ca) {
+      // db.connection.insert({
+      //   ...
+      // }, function(error rows, fields) {
+      //   console.log('rows: ', rows, 'error: ', error);
+      //   callback(error, rows);
+      // });
+    } // a function which can be used to insert a message into the database
   },
 
   users: {
