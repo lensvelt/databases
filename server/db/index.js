@@ -1,19 +1,20 @@
 var mysql = require('mysql');
 
-var connection = mysql.createConnection({
+exports.connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: ''
+  password: 'password',
+  database: 'chat'
 });
 
-connection.connect();
+// connection.connect();
 
-connection.query('SELECT 1 + 1 solution', function(err, rows, fields) {
-  if (err) { throw err; }
-  console.log('The Solution is: ', rows[0].solution);
-});
+// connection.query('SELECT 1 + 1 solution', function(err, rows, fields) {
+//   if (err) { throw err; }
+//   console.log('The Solution is: ', rows[0].solution);
+// });
 
-connection.end();
+// connection.end();
 
 
 

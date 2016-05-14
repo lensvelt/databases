@@ -11,7 +11,7 @@ var app = {
 
   init: function() {
     // Get username
-    app.username = window.location.search.substr(10);
+    app.username = window.location.search.substr(10) || 'fred';
 
     // Cache jQuery selectors
     app.$message = $('#message');
@@ -29,7 +29,7 @@ var app = {
     app.fetch(false);
 
     // Poll for new messages
-    setInterval(app.fetch, 5000);
+    // setInterval(app.fetch, 5000);
   },
 
   send: function(data) {

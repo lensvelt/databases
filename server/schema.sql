@@ -19,10 +19,18 @@ DROP TABLE IF EXISTS `messages`;
 CREATE TABLE `messages` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
   `text` VARCHAR(255) NULL DEFAULT NULL,
-  `user` INTEGER NOT NULL,
-  `room` INTEGER NOT NULL,
+  `user` VARCHAR(20) NOT NULL,
+  `room` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`id`)
 );
+
+-- CREATE TABLE `messages` (
+--   `id` INTEGER NOT NULL AUTO_INCREMENT,
+--   `text` VARCHAR(255) NULL DEFAULT NULL,
+--   `user` INTEGER NOT NULL,
+--   `room` INTEGER NOT NULL,
+--   PRIMARY KEY (`id`)
+-- );
 
 -- ---
 -- Table 'users'
@@ -54,8 +62,8 @@ CREATE TABLE `rooms` (
 -- Foreign Keys 
 -- ---
 
-ALTER TABLE `messages` ADD FOREIGN KEY (user) REFERENCES `users` (`id`);
-ALTER TABLE `messages` ADD FOREIGN KEY (room) REFERENCES `rooms` (`id`);
+-- ALTER TABLE `messages` ADD FOREIGN KEY (user) REFERENCES `users` (`id`);
+-- ALTER TABLE `messages` ADD FOREIGN KEY (room) REFERENCES `rooms` (`id`);
 
 -- ---
 -- Table Properties

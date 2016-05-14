@@ -10,17 +10,24 @@ var messages = {
     objectId: 1
   }]
 };
+var id = 1;
  
 module.exports = {
   messages: {
     get: function (req, res) {
-      messages.results[0].objectId = Math.floor(Math.random() * 10);
+      console.log('get models: ', models.messages.get());
       res.status(200).send(messages);
       res.end();
 
     }, // a function which handles a get request for all messages
 
-    post: function (req, res) {} // a function which handles posting a message to the database
+    post: function (req, res) {
+      req.body.objectId = id++;
+      messages.results.push(req.body);
+
+      res.status(200); //.send(messages.results[messages.results.length - 2].objectId);
+      res.end();
+    } // a function which handles posting a message to the database
   },
 
   users: {
