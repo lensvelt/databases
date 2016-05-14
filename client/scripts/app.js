@@ -3,7 +3,7 @@ var app = {
 
   //TODO: The current 'toggleFriend' function just toggles the class 'friend'
   //to all messages sent by the user
-  server: 'https://api.parse.com/1/classes/messages/',
+  server: 'http://127.0.0.1:3000/classes/messages',
   username: 'anonymous',
   roomname: 'lobby',
   lastMessageId: 0,
@@ -29,7 +29,7 @@ var app = {
     app.fetch(false);
 
     // Poll for new messages
-    setInterval(app.fetch, 3000);
+    setInterval(app.fetch, 5000);
   },
 
   send: function(data) {
@@ -60,6 +60,7 @@ var app = {
       contentType: 'application/json',
       data: { order: '-createdAt'},
       success: function(data) {
+        console.log(data);
         // Don't bother if we have nothing to work with
         if (!data.results || !data.results.length) { return; }
 

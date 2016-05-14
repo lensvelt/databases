@@ -1,4 +1,6 @@
-var db = require('../db');
+var db = require('../db'); //uses our db connection module?
+
+//Will interface with our database and the controller (use callbacks/promises for interaction with controller)
 
 module.exports = {
   messages: {

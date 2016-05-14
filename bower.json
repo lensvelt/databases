@@ -1,0 +1,18 @@
+{
+  "name": "2016-04-databases",
+  "version": "0.0.0",
+  "homepage": "https://github.com/lensvelt/2016-04-databases",
+  "authors": [
+    "Hack Reactor Students <accounts@hackreactor.com>"
+  ],
+  "description": "chatterbox with express server & mySql db",
+  "main": "/server/app.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
