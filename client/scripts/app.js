@@ -60,7 +60,7 @@ var app = {
       contentType: 'application/json',
       data: { order: '-createdAt'},
       success: function(data) {
-        console.log(data);
+        console.log('from client: ', data);
         // Don't bother if we have nothing to work with
         if (!data || !data.length) { return; }
 

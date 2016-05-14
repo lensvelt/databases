@@ -25,7 +25,7 @@ module.exports = {
     post: function (req, res) {
       //req.body.objectId = id++;
       //messages.results.push(req.body);
-      models.messages.post(function(error, result) {
+      models.messages.post(req, function(error, result) {
         res.status(200); //.send(messages.results[messages.results.length - 2].objectId);
         res.end();
       });
