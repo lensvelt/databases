@@ -1,16 +1,6 @@
 var models = require('../models'); //Why does this require our models module??
 
 //Will interface with the view (chat client) and the model (data) (Remember to use callbacks/promises!)
-
-var messages = {
-  results: [{
-    username: 'bob',
-    text: 'Hello err"body',
-    roomname: 'lobby',
-    objectId: 1
-  }]
-};
-var id = 1;
  
 module.exports = {
   messages: {
